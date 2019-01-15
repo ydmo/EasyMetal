@@ -35,12 +35,13 @@
 
 #ifndef _EASYMETAL_H_
 #define _EASYMETAL_H_
+
 #define MTL_API
+
 #include <stdio.h>
 #include <stdint.h>
 
 #ifdef __cplusplus
-#include "ieee_half.h"
 extern "C" {
 #endif /* __cplusplus */
     
@@ -62,12 +63,8 @@ extern "C" {
     typedef short           MTLshort;
     typedef char            MTLchar;
     typedef char            MTLbyte;
-
-#ifdef __cplusplus
-    typedef half            MTLhalf;
-    typedef half            MTLclamph;
-#endif /* __cplusplus */
-    
+    typedef unsigned short  MTLhalf;
+    typedef unsigned short  MTLclamph;
     typedef float           MTLfloat;
     typedef float           MTLclampf;
     typedef void            MTLvoid;
@@ -181,7 +178,7 @@ extern "C" {
 #define MTL_PIXELFORMATVIEW         0x0010
     MTL_API MTLvoid mtlGenTextureFromCurrentDevice(MTLenum __target, MTLenum __format, MTLenum __usage, MTLsizei __width, MTLsizei __height, MTLsizei __depth, MTLsizei __level, MTLsizei __arraylength, MTLuint *__texture);
     MTL_API MTLvoid mtlGenTextureFromCurrentDeviceWithModes(MTLenum __storagemode, MTLenum __cpucachemode, MTLenum __target, MTLenum __format, MTLenum __usage, MTLsizei __width, MTLsizei __height, MTLsizei __depth, MTLsizei __level, MTLsizei __arraylength, MTLuint *__texture);
-    MTL_API MTLvoid mtlGenTextureFromHeap(MTLenum __target, MTLenum __format, MTLenum __usage, MTLsizei __width, MTLsizei __height, MTLsizei __depth, MTLsizei __level, MTLsizei __arraylength, MTLuint *__texture);
+    MTL_API MTLvoid mtlGenTextureFromCurrentHeap(MTLenum __target, MTLenum __format, MTLenum __usage, MTLsizei __width, MTLsizei __height, MTLsizei __depth, MTLsizei __level, MTLsizei __arraylength, MTLuint *__texture);
     MTL_API MTLvoid mtlBindTexture(MTLuint __texture);
     MTL_API MTLvoid mtlSetCurrentTexture(MTLuint __texture);
     MTL_API MTLvoid mtlMakeTextureAliasable(MTLuint __texture);
@@ -201,7 +198,7 @@ extern "C" {
 #define MTL_RESOURCE_OPTION_HAZARDTRACKINGMODE_UNTRACK 256
     
     MTL_API MTLvoid mtlGenBufferFromCurrentDevice(MTLenum __option, MTLsizeu __size, MTLuint *__buffer);
-    MTL_API MTLvoid mtlGenBufferFromHeap(MTLenum __option, MTLsizeu __size, MTLuint *__buffer);
+    MTL_API MTLvoid mtlGenBufferFromCurrentHeap(MTLenum __option, MTLsizeu __size, MTLuint *__buffer);
     MTL_API MTLvoid mtlGenBufferFromCurrentDeviceWithData(MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer);
     MTL_API MTLvoid mtlGenBufferFromCurrentDeviceWithDataNoCopy(MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer);
     MTL_API MTLvoid mtlBindBuffer(MTLuint __buffer);

@@ -658,7 +658,7 @@ MTL_API MTLvoid mtlGenTextureFromCurrentDeviceWithModes(MTLenum __storagemode, M
     assert(0);
 }
 
-MTLvoid mtlGenTextureFromHeap(MTLenum __target, MTLenum __format, MTLenum __usage, MTLsizei __width, MTLsizei __height, MTLsizei __depth, MTLsizei __level, MTLsizei __arraylength, MTLuint *__texture) {
+MTLvoid mtlGenTextureFromCurrentHeap(MTLenum __target, MTLenum __format, MTLenum __usage, MTLsizei __width, MTLsizei __height, MTLsizei __depth, MTLsizei __level, MTLsizei __arraylength, MTLuint *__texture) {
     *__texture = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_heap.second) {
@@ -844,7 +844,7 @@ MTLvoid mtlGenBufferFromCurrentDevice(MTLenum __option, MTLsizeu __size, MTLuint
     assert(0);
 }
 
-MTLvoid mtlGenBufferFromHeap(MTLenum __option, MTLsizeu __size, MTLuint *__buffer) {
+MTLvoid mtlGenBufferFromCurrentHeap(MTLenum __option, MTLsizeu __size, MTLuint *__buffer) {
     *__buffer = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_heap.second) {

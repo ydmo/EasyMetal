@@ -118,8 +118,8 @@ void TestMetalA::test(void) {
     mtlCurrentEncoderSetPipelineState(_pipeline);
     mtlCurrentEncoderSetBuffer(_buffers[0], 0, 0);
     mtlCurrentEncoderSetBuffer(_buffers[1], 0, 1);
-    ushort fmsize[4] = {static_cast<ushort>(_fm_n), static_cast<ushort>(_fm_c), static_cast<ushort>(_fm_h), static_cast<ushort>(_fm_w)};
-    mtlCurrentEncoderSetBytes(fmsize, sizeof(ushort) * 4, 2);
+    unsigned short fmsize[4] = {static_cast<unsigned short>(_fm_n), static_cast<unsigned short>(_fm_c), static_cast<unsigned short>(_fm_h), static_cast<unsigned short>(_fm_w)};
+    mtlCurrentEncoderSetBytes(fmsize, sizeof(unsigned short) * 4, 2);
     mtlCurrentEncoderSetDispatchSize(
                                      _threadgroupspergridx,
                                      _threadgroupspergridy,
@@ -147,6 +147,7 @@ struct vhalf4 {
     half z;
     half w;
 };
+
 vhalf4 vhalf4_make(float a, float b, float c, float d) {
     vhalf4 res;
     res.x = a;
@@ -274,7 +275,7 @@ void TestMetalB::test(void) {
     mtlSetCurrentCommandBuffer(_cmdbuf);
     
     _textures[0] = 0;
-    mtlGenTextureFromHeap(MTL_TEXTURE_2D_ARRAY, MTL_RGBA_16F, MTL_READ|MTL_WRITE, _fm_w, _fm_h, 1, 1, (_fm_c+3)/4, &_textures[0]);
+    mtlGenTextureFromCurrentHeap(MTL_TEXTURE_2D_ARRAY, MTL_RGBA_16F, MTL_READ|MTL_WRITE, _fm_w, _fm_h, 1, 1, (_fm_c+3)/4, &_textures[0]);
     assert(_textures[0]);
     
     mtlGenCurrentEncoderFromCurrentCommandBuffer();

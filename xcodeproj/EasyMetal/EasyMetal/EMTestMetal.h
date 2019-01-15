@@ -15,6 +15,7 @@
 #include <stdarg.h>
 
 #include <EM/easymetal.h>
+#include <EM/ieee_half.h>
 
 class TestMetal
 {

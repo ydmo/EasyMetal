@@ -1,0 +1,23 @@
+# Windows:
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ignore folders
+__pycache__
+data
+build
+checkpoints
+tmp
+
+# python
+*.pyc
+*.so
+*.egg
+*.egg-info
+
+# Apple
+.DS_Store
+
+# VSCode
+.vscode
