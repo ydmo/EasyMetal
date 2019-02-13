@@ -811,6 +811,34 @@ MTL_API MTLvoid mtlGetBytesFromTexture(MTLuint __texture, MTLsizeu __slice, MTLs
     assert(0);
 }
 
+MTL_API MTLvoid mtlSetBytesToTexture(MTLuint __texture, MTLsizeu __slice, MTLsizeu __bytesperrow, MTLTexRegion __region, MTLvoid *__bytes) {
+    assert(__texture);
+    if (@available(iOS 10.0, *)) {
+        auto it = s_metalresources._textures.find(__texture);
+        if (it != s_metalresources._textures.end()) {
+            if (it->first == __texture && it->second != nil) {
+                [it->second replaceRegion:MTLRegionMake3D(__region.origin.x, __region.origin.y, __region.origin.z, __region.size.x, __region.size.y, __region.size.z)
+                              mipmapLevel:0
+                                    slice:__slice
+                                withBytes:__bytes
+                              bytesPerRow:__bytesperrow
+                            bytesPerImage:0];
+                return;
+            }
+            else {
+                assert(0);
+            }
+        }
+        else {
+            assert(0);
+        }
+    }
+    else {
+        assert(0);
+    }
+    assert(0);
+}
+
 #pragma mark MTLBuffer
 
 MTLvoid mtlGenBufferFromCurrentDevice(MTLenum __option, MTLsizeu __size, MTLuint *__buffer) {

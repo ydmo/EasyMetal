@@ -185,6 +185,7 @@ extern "C" {
     MTL_API MTLvoid mtlMakeCurrentTextureAliasable(MTLvoid);
     MTL_API MTLvoid mtlDelTexture(MTLuint *__texture);
     MTL_API MTLvoid mtlGetBytesFromTexture(MTLuint __texture, MTLsizeu __slice, MTLsizeu __bytesperrow, MTLTexRegion __region, MTLvoid *__bytes);
+    MTL_API MTLvoid mtlSetBytesToTexture(MTLuint __texture, MTLsizeu __slice, MTLsizeu __bytesperrow, MTLTexRegion __region, MTLvoid *__bytes);
     
     
 #pragma mark MTLBuffer

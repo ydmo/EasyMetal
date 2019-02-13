@@ -363,3 +363,15 @@ void TestMetalC::test(void) {
         mtlSetCurrentTexture(_textures[0]);
     }
 }
+
+TestMetalD::TestMetalD() {
+    
+}
+
+TestMetalD::~TestMetalD() {
+    
+}
+
+void TestMetalD::test() {
+    
+}

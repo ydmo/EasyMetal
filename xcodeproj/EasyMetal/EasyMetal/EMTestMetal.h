@@ -79,4 +79,12 @@ public:
     void test(void);
 };
 
+class TestMetalD : public TestMetal {
+    // testing shader assembler
+public:
+    TestMetalD();
+    ~TestMetalD();
+    void test(void);
+};
+
 #endif /* EMTestMetal_h */
