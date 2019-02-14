@@ -108,6 +108,36 @@ public:
     }
 };
 
+MTL_API MTLsizeu2 MTLsizeu2Make(MTLsizeu x, MTLsizeu y) {
+    MTLsizeu2 size;
+    size.x = x;
+    size.y = y;
+    return size;
+}
+
+MTL_API MTLsizeu3 MTLsizeu3Make(MTLsizeu x, MTLsizeu y, MTLsizeu z) {
+    MTLsizeu3 size;
+    size.x = x;
+    size.y = y;
+    size.z = z;
+    return size;
+}
+
+MTL_API MTLsizeu4 MTLsizeu4Make(MTLsizeu x, MTLsizeu y, MTLsizeu z, MTLsizeu w) {
+    MTLsizeu4 size;
+    size.x = x;
+    size.y = y;
+    size.z = z;
+    return size;
+}
+
+MTL_API MTLTexRegion MTLTexRegionMake(MTLsizeu x, MTLsizeu y, MTLsizeu z, MTLsizeu w, MTLsizeu h, MTLsizeu depth) {
+    MTLTexRegion region;
+    region.origin = MTLsizeu3Make(x, y, z);
+    region.size = MTLsizeu3Make(w, h, depth);
+    return region;
+}
+
 API_AVAILABLE(ios(10.0))
 static MTLResources s_metalresources;
 

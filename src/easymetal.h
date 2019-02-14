@@ -73,12 +73,14 @@ extern "C" {
         MTLsizeu x;
         MTLsizeu y;
     };
+    MTL_API MTLsizeu2 MTLsizeu2Make(MTLsizeu x, MTLsizeu y);
     
     struct MTLsizeu3 {
         MTLsizeu x;
         MTLsizeu y;
         MTLsizeu z;
     };
+    MTL_API MTLsizeu3 MTLsizeu3Make(MTLsizeu x, MTLsizeu y, MTLsizeu z);
     
     struct MTLsizeu4 {
         MTLsizeu x;
@@ -86,11 +88,13 @@ extern "C" {
         MTLsizeu z;
         MTLsizeu w;
     };
+    MTL_API MTLsizeu4 MTLsizeu4Make(MTLsizeu x, MTLsizeu y, MTLsizeu z, MTLsizeu w);
     
     struct MTLTexRegion {
         MTLsizeu3 origin;
         MTLsizeu3 size;
     };
+    MTL_API MTLTexRegion MTLTexRegionMake(MTLsizeu x, MTLsizeu y, MTLsizeu z, MTLsizeu w, MTLsizeu h, MTLsizeu depth);
     
 #pragma mark MTLDevice
     // for MTLDevice
