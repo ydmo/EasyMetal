@@ -69,6 +69,12 @@ extern "C" {
     typedef float           MTLclampf;
     typedef void            MTLvoid;
     
+    struct MTLsizei2 {
+        MTLsizei x;
+        MTLsizei y;
+    };
+    MTL_API MTLsizei2 MTLsizei2Make(MTLsizei x, MTLsizei y);
+    
     struct MTLsizeu2 {
         MTLsizeu x;
         MTLsizeu y;

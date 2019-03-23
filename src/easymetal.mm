@@ -108,6 +108,13 @@ public:
     }
 };
 
+MTL_API MTLsizei2 MTLsizei2Make(MTLsizei x, MTLsizei y) {
+    MTLsizei2 size;
+    size.x = x;
+    size.y = y;
+    return size;
+}
+
 MTL_API MTLsizeu2 MTLsizeu2Make(MTLsizeu x, MTLsizeu y) {
     MTLsizeu2 size;
     size.x = x;
