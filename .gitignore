@@ -21,3 +21,4 @@ tmp
 
 # VSCode
 .vscode
+*.zip
