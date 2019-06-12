@@ -34,6 +34,7 @@
 //
 
 #include "easymetal.h"
+#include "easymetal_extern.h"
 
 // metal ...
 #include <Foundation/Foundation.h>
@@ -52,6 +53,7 @@
 
 class API_AVAILABLE(ios(10.0)) MTLResources {
 public:
+#if MTL_AVALIABLE
     // using unordered_map for fast hash searching ..
     std::unordered_map<MTLuint, id<MTLDevice>>                  _devs;
     std::unordered_map<MTLuint, id<MTLLibrary>>                 _libs;
@@ -78,9 +80,10 @@ public:
     std::pair<MTLuint, id<MTLBuffer>>                           _current_buffer;
     std::pair<MTLuint, MTLFunctionConstantValues *>             _current_funcconstvals;
     std::pair<MTLuint, id<MTLFunction>>                         _current_computefunction;
-    
+#endif // MTL_AVALIABLE
 public:
     MTLResources() {
+#if MTL_AVALIABLE
         _devs.clear();
         _libs.clear();
         _queues.clear();
@@ -105,6 +108,36 @@ public:
         _current_buffer = std::make_pair(MTLuint(0), nil);
         _current_funcconstvals = std::make_pair(MTLuint(0), nil);
         _current_computefunction = std::make_pair(MTLuint(0), nil);
+#endif // MTL_AVALIABLE
+    }
+    
+    ~MTLResources() {
+#if MTL_AVALIABLE
+        _devs.clear();
+        _libs.clear();
+        _queues.clear();
+        _fences.clear();
+        _heaps.clear();
+        _cmdbufs.clear();
+        _cmdencoders.clear();
+        _textures.clear();
+        _buffers.clear();
+        _funcconstvalses.clear();
+        _computefunctions.clear();
+        _computepipelinestates.clear();
+        //
+        _current_dev = std::make_pair(MTLuint(0), nil);
+        _current_lib = std::make_pair(MTLuint(0), nil);
+        _current_queue = std::make_pair(MTLuint(0), nil);
+        _current_fence = std::make_pair(MTLuint(0), nil);
+        _current_heap = std::make_pair(MTLuint(0), nil);
+        _current_cmdbuf = std::make_pair(MTLuint(0), nil);
+        _current_cmdencoder = std::make_pair(MTLuint(0), nil);
+        _current_texture = std::make_pair(MTLuint(0), nil);
+        _current_buffer = std::make_pair(MTLuint(0), nil);
+        _current_funcconstvals = std::make_pair(MTLuint(0), nil);
+        _current_computefunction = std::make_pair(MTLuint(0), nil);
+#endif // MTL_AVALIABLE
     }
 };
 
@@ -151,6 +184,7 @@ static MTLResources s_metalresources;
 #pragma mark MTLDevice
 
 MTLvoid mtlGenDevice(MTLuint *__device) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (getGPUAvaliableFlag()) {
             id<MTLDevice> dev = MTLCreateSystemDefaultDevice();
@@ -177,10 +211,12 @@ MTLvoid mtlGenDevice(MTLuint *__device) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlBindDevice(MTLuint __device) {
+#if MTL_AVALIABLE
     assert(__device);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._devs.begin(); it != s_metalresources._devs.end(); it++) {
@@ -193,6 +229,7 @@ MTLvoid mtlBindDevice(MTLuint __device) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -201,6 +238,7 @@ MTLvoid mtlSetCurrentDevice(MTLuint __device) {
 }
 
 MTLvoid mtlDelDevice(MTLuint *__device) {
+#if MTL_AVALIABLE
     assert(*__device);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._devs.begin(); it != s_metalresources._devs.end(); it++) {
@@ -217,12 +255,14 @@ MTLvoid mtlDelDevice(MTLuint *__device) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 #pragma mark MTLCommandQueue
 
 MTLvoid mtlGenQueueFromCurrentDevice(MTLuint __maxbuffer, MTLuint *__queue) {
+#if MTL_AVALIABLE
     *__queue = 0;
     if (@available(iOS 10.0, *)) {
         id<MTLCommandQueue> queue = __maxbuffer? [s_metalresources._current_dev.second newCommandQueueWithMaxCommandBufferCount:__maxbuffer] : [s_metalresources._current_dev.second newCommandQueue];
@@ -245,10 +285,12 @@ MTLvoid mtlGenQueueFromCurrentDevice(MTLuint __maxbuffer, MTLuint *__queue) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlBindQueue(MTLuint __queue) {
+#if MTL_AVALIABLE
     assert(__queue);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._queues.begin(); it != s_metalresources._queues.end(); it++) {
@@ -261,6 +303,7 @@ MTLvoid mtlBindQueue(MTLuint __queue) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -269,6 +312,7 @@ MTLvoid mtlSetCurrentQueue(MTLuint __queue) {
 }
 
 MTLvoid mtlDelQueue(MTLuint *__queue) {
+#if MTL_AVALIABLE
     assert(*__queue);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._queues.begin(); it != s_metalresources._queues.end(); it++) {
@@ -285,6 +329,7 @@ MTLvoid mtlDelQueue(MTLuint *__queue) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -292,6 +337,7 @@ MTLvoid mtlDelQueue(MTLuint *__queue) {
 #pragma mark MTLLibrary
 
 MTLvoid mtlGenLibraryFromCurrentDevice(MTLuint *__library) {
+#if MTL_AVALIABLE
     *__library = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -319,10 +365,12 @@ MTLvoid mtlGenLibraryFromCurrentDevice(MTLuint *__library) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenLibraryFromCurrentDeviceWithSource(const MTLchar *__shaders, MTLuint *__library) {
+#if MTL_AVALIABLE
     *__library = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -368,10 +416,12 @@ MTLvoid mtlGenLibraryFromCurrentDeviceWithSource(const MTLchar *__shaders, MTLui
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenLibraryFromCurrentDeviceWithMetalLib(const MTLchar *__metallibpath, MTLuint *__library) {
+#if MTL_AVALIABLE
     *__library = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -400,10 +450,12 @@ MTLvoid mtlGenLibraryFromCurrentDeviceWithMetalLib(const MTLchar *__metallibpath
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenLibraryFromCurrentDeviceWithMetalLibURL(const MTLchar *__metalliburl, MTLuint *__library) { // API_AVAILABLE(macos(10.13), ios(11.0));
+#if MTL_AVALIABLE
     *__library = 0;
     if (@available(iOS 11.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -432,10 +484,12 @@ MTLvoid mtlGenLibraryFromCurrentDeviceWithMetalLibURL(const MTLchar *__metallibu
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlBindLibrary(MTLuint __library) {
+#if MTL_AVALIABLE
     assert(__library);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._libs.begin(); it != s_metalresources._libs.end(); it++) {
@@ -448,6 +502,7 @@ MTLvoid mtlBindLibrary(MTLuint __library) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -456,6 +511,7 @@ MTLvoid mtlSetCurrentLibrary(MTLuint __library) {
 }
 
 MTLvoid mtlDelLibrary(MTLuint *__library) {
+#if MTL_AVALIABLE
     assert(*__library);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._libs.begin(); it != s_metalresources._libs.end(); it++) {
@@ -472,6 +528,7 @@ MTLvoid mtlDelLibrary(MTLuint *__library) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -479,6 +536,7 @@ MTLvoid mtlDelLibrary(MTLuint *__library) {
 #pragma mark MTLFence
 
 MTLvoid mtlGenFenceFromCurrentDevice(MTLuint *__fence) {
+#if MTL_AVALIABLE
     *__fence = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -506,10 +564,12 @@ MTLvoid mtlGenFenceFromCurrentDevice(MTLuint *__fence) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(*__fence);
 }
 
 MTLvoid mtlBindFence(MTLuint __fence) {
+#if MTL_AVALIABLE
     assert(__fence);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._fences.begin(); it != s_metalresources._fences.end(); it++) {
@@ -522,6 +582,7 @@ MTLvoid mtlBindFence(MTLuint __fence) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -530,6 +591,7 @@ MTLvoid mtlSetCurrentFence(MTLuint __fence) {
 }
 
 MTLvoid mtlEncoderUpdateFence(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_fence.second) {
             if (s_metalresources._current_cmdencoder.second) {
@@ -546,10 +608,12 @@ MTLvoid mtlEncoderUpdateFence(MTLvoid) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlDelFence(MTLuint *__fence) {
+#if MTL_AVALIABLE
     assert(__fence);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._fences.begin(); it != s_metalresources._fences.end(); it++) {
@@ -566,12 +630,14 @@ MTLvoid mtlDelFence(MTLuint *__fence) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 #pragma mark MTLHeap
 
 MTLvoid mtlGenHeapFromCurrentDevice(MTLenum __storagemode, MTLenum __cpucachemode, MTLsizeu __size, MTLuint *__heap) {
+#if MTL_AVALIABLE
     *__heap = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -603,10 +669,12 @@ MTLvoid mtlGenHeapFromCurrentDevice(MTLenum __storagemode, MTLenum __cpucachemod
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlBindHeap(MTLuint __heap) {
+#if MTL_AVALIABLE
     assert(__heap);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._heaps.begin(); it != s_metalresources._heaps.end(); it++) {
@@ -619,6 +687,7 @@ MTLvoid mtlBindHeap(MTLuint __heap) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -627,6 +696,7 @@ MTLvoid mtlSetCurrentHeap(MTLuint __heap) {
 }
 
 MTLvoid mtlDelHeap(MTLuint *__heap) {
+#if MTL_AVALIABLE
     assert(*__heap);
     if (@available(iOS 10.0, *)) {
         for (auto it = s_metalresources._heaps.begin(); it != s_metalresources._heaps.end(); it++) {
@@ -643,6 +713,7 @@ MTLvoid mtlDelHeap(MTLuint *__heap) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -654,6 +725,7 @@ MTLvoid mtlGenTextureFromCurrentDevice(MTLenum __target, MTLenum __format, MTLen
 }
 
 MTL_API MTLvoid mtlGenTextureFromCurrentDeviceWithModes(MTLenum __storagemode, MTLenum __cpucachemode, MTLenum __target, MTLenum __format, MTLenum __usage, MTLsizei __width, MTLsizei __height, MTLsizei __depth, MTLsizei __level, MTLsizei __arraylength, MTLuint *__texture) {
+#if MTL_AVALIABLE
     *__texture = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -692,10 +764,12 @@ MTL_API MTLvoid mtlGenTextureFromCurrentDeviceWithModes(MTLenum __storagemode, M
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenTextureFromCurrentHeap(MTLenum __target, MTLenum __format, MTLenum __usage, MTLsizei __width, MTLsizei __height, MTLsizei __depth, MTLsizei __level, MTLsizei __arraylength, MTLuint *__texture) {
+#if MTL_AVALIABLE
     *__texture = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_heap.second) {
@@ -734,10 +808,12 @@ MTLvoid mtlGenTextureFromCurrentHeap(MTLenum __target, MTLenum __format, MTLenum
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlBindTexture(MTLuint __texture) {
+#if MTL_AVALIABLE
     assert(__texture);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._textures.find(__texture);
@@ -752,6 +828,7 @@ MTLvoid mtlBindTexture(MTLuint __texture) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
@@ -760,6 +837,7 @@ MTLvoid mtlSetCurrentTexture(MTLuint __texture) {
 }
 
 MTL_API MTLvoid mtlMakeTextureAliasable(MTLuint __texture) {
+#if MTL_AVALIABLE
     assert(__texture);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._textures.find(__texture);
@@ -774,10 +852,12 @@ MTL_API MTLvoid mtlMakeTextureAliasable(MTLuint __texture) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlMakeCurrentTextureAliasable(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_texture.second) {
             [s_metalresources._current_texture.second makeAliasable];
@@ -790,10 +870,12 @@ MTL_API MTLvoid mtlMakeCurrentTextureAliasable(MTLvoid) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlDelTexture(MTLuint *__texture) {
+#if MTL_AVALIABLE
     assert(*__texture);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._textures.find(*__texture);
@@ -817,10 +899,12 @@ MTLvoid mtlDelTexture(MTLuint *__texture) {
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlGetBytesFromTexture(MTLuint __texture, MTLsizeu __slice, MTLsizeu __bytesperrow, MTLTexRegion __region, MTLvoid *__bytes) {
+#if MTL_AVALIABLE
     assert(__texture);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._textures.find(__texture);
@@ -845,10 +929,12 @@ MTL_API MTLvoid mtlGetBytesFromTexture(MTLuint __texture, MTLsizeu __slice, MTLs
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlSetBytesToTexture(MTLuint __texture, MTLsizeu __slice, MTLsizeu __bytesperrow, MTLTexRegion __region, MTLvoid *__bytes) {
+#if MTL_AVALIABLE
     assert(__texture);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._textures.find(__texture);
@@ -873,12 +959,14 @@ MTL_API MTLvoid mtlSetBytesToTexture(MTLuint __texture, MTLsizeu __slice, MTLsiz
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 #pragma mark MTLBuffer
 
 MTLvoid mtlGenBufferFromCurrentDevice(MTLenum __option, MTLsizeu __size, MTLuint *__buffer) {
+#if MTL_AVALIABLE
     *__buffer = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -906,10 +994,12 @@ MTLvoid mtlGenBufferFromCurrentDevice(MTLenum __option, MTLsizeu __size, MTLuint
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenBufferFromCurrentHeap(MTLenum __option, MTLsizeu __size, MTLuint *__buffer) {
+#if MTL_AVALIABLE
     *__buffer = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_heap.second) {
@@ -937,10 +1027,12 @@ MTLvoid mtlGenBufferFromCurrentHeap(MTLenum __option, MTLsizeu __size, MTLuint *
     else {
         assert(0);
     }
+#endif // #if MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenBufferFromCurrentDeviceWithData(MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer) {
+#if MTL_AVALIABLE
     *__buffer = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -968,10 +1060,12 @@ MTLvoid mtlGenBufferFromCurrentDeviceWithData(MTLenum __option, MTLsizeu __size,
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenBufferFromCurrentDeviceWithDataNoCopy(MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer) {
+#if MTL_AVALIABLE
     *__buffer = 0;
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_dev.second) {
@@ -1002,10 +1096,12 @@ MTLvoid mtlGenBufferFromCurrentDeviceWithDataNoCopy(MTLenum __option, MTLsizeu _
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlBindBuffer(MTLuint __buffer) {
+#if MTL_AVALIABLE
     assert(__buffer);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._buffers.find(__buffer);
@@ -1025,6 +1121,7 @@ MTLvoid mtlBindBuffer(MTLuint __buffer) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -1033,6 +1130,7 @@ MTLvoid mtlSetCurrentBuffer(MTLuint __buffer) {
 }
 
 MTL_API MTLvoid mtlGetBytesFromBuffer(MTLuint __buffer, MTLsizeu __size, MTLvoid *__bytes) {
+#if MTL_AVALIABLE
     assert(__buffer);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._buffers.find(__buffer);
@@ -1052,10 +1150,12 @@ MTL_API MTLvoid mtlGetBytesFromBuffer(MTLuint __buffer, MTLsizeu __size, MTLvoid
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlDelBuffer(MTLuint *__buffer) {
+#if MTL_AVALIABLE
     assert(*__buffer);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._buffers.find(*__buffer);
@@ -1074,12 +1174,14 @@ MTLvoid mtlDelBuffer(MTLuint *__buffer) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 #pragma mark MTLFunctionConstantValues
 
 MTLvoid mtlGenFunctionConstantValues(MTLuint *__constvals) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         MTLFunctionConstantValues *vals = [[MTLFunctionConstantValues alloc] init];
         if (vals) {
@@ -1101,10 +1203,12 @@ MTLvoid mtlGenFunctionConstantValues(MTLuint *__constvals) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlSetFunctionConstantValuesWithIndex(MTLuint __constvals, MTLvoid *__data, MTLenum __datatype, MTLidx __index) {
+#if MTL_AVALIABLE
     assert(__data);
     assert(__constvals);
     if (@available(iOS 10.0, *)) {
@@ -1120,10 +1224,12 @@ MTLvoid mtlSetFunctionConstantValuesWithIndex(MTLuint __constvals, MTLvoid *__da
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlSetFunctionConstantValuesWithName(MTLuint __constvals, MTLvoid *__data, MTLenum __datatype, const MTLchar * __name) {
+#if MTL_AVALIABLE
     assert(__data);
     assert(__name);
     assert(__constvals);
@@ -1140,10 +1246,12 @@ MTLvoid mtlSetFunctionConstantValuesWithName(MTLuint __constvals, MTLvoid *__dat
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlBindFunctionConstantValues(MTLuint __constvals) {
+#if MTL_AVALIABLE
     assert(__constvals);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._funcconstvalses.find(__constvals);
@@ -1158,6 +1266,7 @@ MTLvoid mtlBindFunctionConstantValues(MTLuint __constvals) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -1166,6 +1275,7 @@ MTLvoid mtlSetCurrentFunctionConstantValues(MTLuint __constvals) {
 }
 
 MTLvoid mtlSetCurrentFunctionConstantValuesWithIndex(MTLvoid *__data, MTLenum __datatype, MTLidx __index) {
+#if MTL_AVALIABLE
     assert(__data);
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_funcconstvals.second) {
@@ -1179,10 +1289,12 @@ MTLvoid mtlSetCurrentFunctionConstantValuesWithIndex(MTLvoid *__data, MTLenum __
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlSetCurrentFunctionConstantValuesWithName(MTLvoid *__data, MTLenum __datatype, const MTLchar * __name) {
+#if MTL_AVALIABLE
     assert(__data);
     assert(__name);
     if (@available(iOS 10.0, *)) {
@@ -1197,10 +1309,12 @@ MTLvoid mtlSetCurrentFunctionConstantValuesWithName(MTLvoid *__data, MTLenum __d
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlDelFunctionConstantValues(MTLuint *__constvals) {
+#if MTL_AVALIABLE
     assert(*__constvals);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._funcconstvalses.find(*__constvals);
@@ -1224,6 +1338,7 @@ MTLvoid mtlDelFunctionConstantValues(MTLuint *__constvals) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -1231,6 +1346,7 @@ MTLvoid mtlDelFunctionConstantValues(MTLuint *__constvals) {
 #pragma mark MTLFunction
 
 MTLvoid mtlGenFunctionFromLibrary(const MTLchar * __name, MTLuint __library, MTLuint *__funtion) {
+#if MTL_AVALIABLE
     assert(__name);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._libs.find(__library);
@@ -1259,10 +1375,12 @@ MTLvoid mtlGenFunctionFromLibrary(const MTLchar * __name, MTLuint __library, MTL
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenFunctionFromLibraryWithCurrentConstantValues(const MTLchar * __name, MTLuint __library, MTLuint *__funtion) {
+#if MTL_AVALIABLE
     assert(__name);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._libs.find(__library);
@@ -1297,10 +1415,12 @@ MTLvoid mtlGenFunctionFromLibraryWithCurrentConstantValues(const MTLchar * __nam
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenFunctionFromLibraryWithConstantValues(const MTLchar * __name, MTLuint __library, MTLuint __constvals, MTLuint *__funtion) {
+#if MTL_AVALIABLE
     assert(__name);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._libs.find(__library);
@@ -1341,11 +1461,12 @@ MTLvoid mtlGenFunctionFromLibraryWithConstantValues(const MTLchar * __name, MTLu
     else {
         assert(0);
     }
-    
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenFunctionFromCurrentLibrary(const MTLchar * __name, MTLuint *__funtion) {
+#if MTL_AVALIABLE
     assert(__name);
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_lib.second) {
@@ -1373,10 +1494,12 @@ MTLvoid mtlGenFunctionFromCurrentLibrary(const MTLchar * __name, MTLuint *__funt
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenFunctionFromCurrentLibraryWithCurrentConstantValues(const MTLchar * __name, MTLuint *__funtion) {
+#if MTL_AVALIABLE
     assert(__name);
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_lib.second) {
@@ -1410,10 +1533,12 @@ MTLvoid mtlGenFunctionFromCurrentLibraryWithCurrentConstantValues(const MTLchar 
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenFunctionFromCurrentLibraryWithConstantValues(const MTLchar * __name, MTLuint __constvals, MTLuint *__funtion) {
+#if MTL_AVALIABLE
     assert(__name);
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_lib.second) {
@@ -1453,10 +1578,12 @@ MTLvoid mtlGenFunctionFromCurrentLibraryWithConstantValues(const MTLchar * __nam
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlBindFunction(MTLuint __funtion) {
+#if MTL_AVALIABLE
     assert(__funtion);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._computefunctions.find(__funtion);
@@ -1476,7 +1603,7 @@ MTLvoid mtlBindFunction(MTLuint __funtion) {
     else {
         assert(0);
     }
-    //
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -1485,6 +1612,7 @@ MTLvoid mtlSetCurrentFunction(MTLuint __funtion) {
 }
 
 MTLvoid mtlDelFunction(MTLuint *__funtion) {
+#if MTL_AVALIABLE
     assert(*__funtion);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._computefunctions.find(*__funtion);
@@ -1507,13 +1635,14 @@ MTLvoid mtlDelFunction(MTLuint *__funtion) {
     else {
         assert(0);
     }
-    //
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 #pragma mark MTLComputePipelineState
 
 MTLvoid mtlGenComputePipelineStateFromDeviceWithFunction(MTLuint __device, MTLuint __function, MTLuint *__pipelinestate) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it_func = s_metalresources._computefunctions.find(__function);
         if (it_func != s_metalresources._computefunctions.end()) {
@@ -1555,11 +1684,12 @@ MTLvoid mtlGenComputePipelineStateFromDeviceWithFunction(MTLuint __device, MTLui
     else {
         assert(0);
     }
-    //
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenComputePipelineStateFromDeviceWithCurrentFunction(MTLuint __device, MTLuint *__pipelinestate) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_computefunction.second) {
             auto it_dev = s_metalresources._devs.find(__device);
@@ -1595,11 +1725,12 @@ MTLvoid mtlGenComputePipelineStateFromDeviceWithCurrentFunction(MTLuint __device
     else {
         assert(0);
     }
-    //
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenComputePipelineStateFromCurrentDeviceWithFunction(MTLuint __function, MTLuint *__pipelinestate) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it_func = s_metalresources._computefunctions.find(__function);
         if (it_func != s_metalresources._computefunctions.end()) {
@@ -1635,11 +1766,12 @@ MTLvoid mtlGenComputePipelineStateFromCurrentDeviceWithFunction(MTLuint __functi
     else {
         assert(0);
     }
-    //
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlGenComputePipelineStateFromCurrentDeviceWithCurrentFunction(MTLuint *__pipelinestate) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_computefunction.second) {
             if (s_metalresources._current_dev.second) {
@@ -1669,11 +1801,12 @@ MTLvoid mtlGenComputePipelineStateFromCurrentDeviceWithCurrentFunction(MTLuint *
     else {
         assert(0);
     }
-    //
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlGetMaxThreadsPerGroupFromComputePipelineState(MTLuint __pipelinestate, MTLsizeu *__maxthreadnum) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._computepipelinestates.find(__pipelinestate);
         if (it != s_metalresources._computepipelinestates.end()) {
@@ -1692,10 +1825,12 @@ MTL_API MTLvoid mtlGetMaxThreadsPerGroupFromComputePipelineState(MTLuint __pipel
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlGetBestThreadWidthFromComputePipelineState(MTLuint __pipelinestate, MTLsizeu *__maxthreadwidth) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._computepipelinestates.find(__pipelinestate);
         if (it != s_metalresources._computepipelinestates.end()) {
@@ -1714,10 +1849,12 @@ MTL_API MTLvoid mtlGetBestThreadWidthFromComputePipelineState(MTLuint __pipeline
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTLvoid mtlDelComputePipelineState(MTLuint *__pipelinestate) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._computepipelinestates.find(*__pipelinestate);
         if (it != s_metalresources._computepipelinestates.end()) {
@@ -1737,13 +1874,14 @@ MTLvoid mtlDelComputePipelineState(MTLuint *__pipelinestate) {
     else {
         assert(0);
     }
-    //
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 #pragma mark MTLCommandBuffer
 
 MTL_API MTLvoid mtlGenCommandBufferFromCurrentQueue(MTLuint *__cmdbuf) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_queue.second) {
             id<MTLCommandBuffer> cmdbuf = [s_metalresources._current_queue.second commandBuffer];
@@ -1770,11 +1908,12 @@ MTL_API MTLvoid mtlGenCommandBufferFromCurrentQueue(MTLuint *__cmdbuf) {
     else {
         assert(0);
     }
-    //
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlBindCommandBuffer(MTLuint __cmdbuf) {
+#if MTL_AVALIABLE
     assert(__cmdbuf);
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._cmdbufs.find(__cmdbuf);
@@ -1794,6 +1933,7 @@ MTL_API MTLvoid mtlBindCommandBuffer(MTLuint __cmdbuf) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -1802,6 +1942,7 @@ MTL_API MTLvoid mtlSetCurrentCommandBuffer(MTLuint __cmdbuf) {
 }
 
 MTL_API MTLvoid mtlSetCompletedBlockToCurrentCommandBuffer(MTLCallBack __lamdablock, int argc, ...) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdbuf.second) {
             va_list ap;
@@ -1817,10 +1958,12 @@ MTL_API MTLvoid mtlSetCompletedBlockToCurrentCommandBuffer(MTLCallBack __lamdabl
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCommitCurrentCommandBuffer(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdbuf.second) {
             [s_metalresources._current_cmdbuf.second commit];
@@ -1833,10 +1976,12 @@ MTL_API MTLvoid mtlCommitCurrentCommandBuffer(MTLvoid) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlWaitUntilCurrentCommandBufferScheduled(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdbuf.second) {
             [s_metalresources._current_cmdbuf.second waitUntilScheduled];
@@ -1849,10 +1994,12 @@ MTL_API MTLvoid mtlWaitUntilCurrentCommandBufferScheduled(MTLvoid) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlWaitUntilCurrentCommandBufferComplete(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdbuf.second) {
             [s_metalresources._current_cmdbuf.second waitUntilCompleted];
@@ -1865,10 +2012,12 @@ MTL_API MTLvoid mtlWaitUntilCurrentCommandBufferComplete(MTLvoid) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlGetCurrentCommandBufferGPUTime(MTLfloat *__gputime) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.3, *)) {
         if (s_metalresources._current_cmdbuf.second) {
             *__gputime = MTLfloat(s_metalresources._current_cmdbuf.second.GPUEndTime - s_metalresources._current_cmdbuf.second.GPUStartTime);
@@ -1881,10 +2030,12 @@ MTL_API MTLvoid mtlGetCurrentCommandBufferGPUTime(MTLfloat *__gputime) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlDelCommandBuffer(MTLuint *__cmdbuf) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._cmdbufs.find(*__cmdbuf);
         if (it != s_metalresources._cmdbufs.end()) {
@@ -1907,6 +2058,7 @@ MTL_API MTLvoid mtlDelCommandBuffer(MTLuint *__cmdbuf) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -1914,6 +2066,7 @@ MTL_API MTLvoid mtlDelCommandBuffer(MTLuint *__cmdbuf) {
 #pragma mark MTLComputeCommandEncoder
 // for MTLComputeCommandEncoder
 MTL_API MTLvoid mtlGenEncoderFromCommandBuffer(MTLuint __cmdbuf, MTLuint *__encoder) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._cmdbufs.find(__cmdbuf);
         if (it != s_metalresources._cmdbufs.end()) {
@@ -1946,10 +2099,12 @@ MTL_API MTLvoid mtlGenEncoderFromCommandBuffer(MTLuint __cmdbuf, MTLuint *__enco
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlGenEncoderFromCurrentCommandBuffer(MTLuint *__encoder) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdbuf.second) {
             id<MTLComputeCommandEncoder> cencoder = [s_metalresources._current_cmdbuf.second computeCommandEncoder];
@@ -1976,10 +2131,12 @@ MTL_API MTLvoid mtlGenEncoderFromCurrentCommandBuffer(MTLuint *__encoder) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlBindEncoder(MTLuint __encoder) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._cmdencoders.find(__encoder);
         if (it != s_metalresources._cmdencoders.end()) {
@@ -1998,6 +2155,7 @@ MTL_API MTLvoid mtlBindEncoder(MTLuint __encoder) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -2006,6 +2164,7 @@ MTL_API MTLvoid mtlSetCurrentEncoder(MTLuint __encoder) {
 }
 
 MTL_API MTLvoid mtlDelEncoder(MTLuint *__encoder) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         auto it = s_metalresources._cmdencoders.find(*__encoder);
         if (it != s_metalresources._cmdencoders.end()) {
@@ -2028,11 +2187,13 @@ MTL_API MTLvoid mtlDelEncoder(MTLuint *__encoder) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 // encode one pass temporarily ...
 MTL_API MTLvoid mtlGenCurrentEncoderFromCurrentCommandBuffer(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdbuf.second) {
             id<MTLComputeCommandEncoder> cencoder = [s_metalresources._current_cmdbuf.second computeCommandEncoder];
@@ -2051,10 +2212,12 @@ MTL_API MTLvoid mtlGenCurrentEncoderFromCurrentCommandBuffer(MTLvoid) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCurrentEncoderSetPipelineState(MTLuint __pipelinestate) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             auto it_pipeline = s_metalresources._computepipelinestates.find(__pipelinestate);
@@ -2078,10 +2241,12 @@ MTL_API MTLvoid mtlCurrentEncoderSetPipelineState(MTLuint __pipelinestate) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCurrentEncoderSetBytes(MTLvoid *__bytes, MTLuint __length, MTLidx __index) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             if (__bytes) {
@@ -2099,10 +2264,12 @@ MTL_API MTLvoid mtlCurrentEncoderSetBytes(MTLvoid *__bytes, MTLuint __length, MT
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCurrentEncoderSetBuffer(MTLuint __buffer, MTLidx __offset, MTLidx __index) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             auto it_buf = s_metalresources._buffers.find(__buffer);
@@ -2128,10 +2295,12 @@ MTL_API MTLvoid mtlCurrentEncoderSetBuffer(MTLuint __buffer, MTLidx __offset, MT
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCurrentEncoderSetTexture(MTLuint __texture, MTLidx __index) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             auto it_tex = s_metalresources._textures.find(__texture);
@@ -2155,6 +2324,7 @@ MTL_API MTLvoid mtlCurrentEncoderSetTexture(MTLuint __texture, MTLidx __index) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -2166,6 +2336,7 @@ MTL_API MTLvoid mtlCurrentEncoderSetDispatchSize(
                                                  MTLsizeu __threadsperthreadsgroupy,
                                                  MTLsizeu __threadsperthreadsgroupz
                                                  ) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             [s_metalresources._current_cmdencoder.second dispatchThreadgroups:MTLSizeMake(__threadgroupspergridx, __threadgroupspergridy, __threadgroupspergridz)
@@ -2179,6 +2350,7 @@ MTL_API MTLvoid mtlCurrentEncoderSetDispatchSize(
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
@@ -2188,6 +2360,7 @@ MTL_API MTLvoid mtlCurrentEncoderSetDispatchSize3(MTLsizeu3 __threadgroupspergri
 }
 
 MTL_API MTLvoid mtlCurrentEncoderWaitForCurrentFence(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             if (s_metalresources._current_fence.second) {
@@ -2205,10 +2378,12 @@ MTL_API MTLvoid mtlCurrentEncoderWaitForCurrentFence(MTLvoid) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCurrentEncoderWaitForFence(MTLuint __fence) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             auto it_fence = s_metalresources._fences.find(__fence);
@@ -2232,10 +2407,12 @@ MTL_API MTLvoid mtlCurrentEncoderWaitForFence(MTLuint __fence) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCurrentEncoderUpdateCurrentFence(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             if (s_metalresources._current_fence.second) {
@@ -2253,10 +2430,12 @@ MTL_API MTLvoid mtlCurrentEncoderUpdateCurrentFence(MTLvoid) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCurrentEncoderUpdateFence(MTLuint __fence) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             auto it_fence = s_metalresources._fences.find(__fence);
@@ -2280,10 +2459,12 @@ MTL_API MTLvoid mtlCurrentEncoderUpdateFence(MTLuint __fence) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
 
 MTL_API MTLvoid mtlCurrentEncoderSetEndCoding(MTLvoid) {
+#if MTL_AVALIABLE
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             [s_metalresources._current_cmdencoder.second endEncoding];
@@ -2297,5 +2478,32 @@ MTL_API MTLvoid mtlCurrentEncoderSetEndCoding(MTLvoid) {
     else {
         assert(0);
     }
+#endif // MTL_AVALIABLE
     assert(0);
 }
+
+#if MTL_AVALIABLE
+MTL_API id<MTLDevice> mtlGetidDevice(MTLuint __device) {
+    return s_metalresources._devs[__device];
+}
+
+MTL_API id<MTLLibrary> mtlGetidLibrary(MTLuint __library) {
+    return s_metalresources._libs[__library];
+}
+
+MTL_API id<MTLCommandBuffer> mtlGetidCommandBuffer(MTLuint __cmdbuf) {
+    return s_metalresources._cmdbufs[__cmdbuf];
+}
+
+MTL_API id<MTLComputeCommandEncoder> mtlGetidComputeCommandEncoder(MTLuint __encoder) {
+    return s_metalresources._cmdencoders[__encoder];
+}
+
+MTL_API id<MTLTexture> mtlGetidTexture(MTLuint __texture) {
+    return s_metalresources._textures[__texture];
+}
+
+MTL_API id<MTLBuffer> mtlGetidBuffer(MTLuint __buffer) {
+    return s_metalresources._buffers[__buffer];
+}
+#endif // #if MTL_AVALIABLE

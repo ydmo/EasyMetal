@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2027452322AFCF3900A3E2B9 /* easymetal_extern.h in Headers */ = {isa = PBXBuildFile; fileRef = 2027452222AFCEA500A3E2B9 /* easymetal_extern.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2037195321E5DA5B00796B6F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2037195221E5DA5B00796B6F /* AppDelegate.m */; };
 		2037195621E5DA5B00796B6F /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2037195521E5DA5B00796B6F /* ViewController.mm */; };
 		2037195921E5DA5B00796B6F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2037195721E5DA5B00796B6F /* Main.storyboard */; };
@@ -73,6 +74,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2027452222AFCEA500A3E2B9 /* easymetal_extern.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = easymetal_extern.h; sourceTree = "<group>"; };
 		2037194E21E5DA5B00796B6F /* EasyMetal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyMetal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2037195121E5DA5B00796B6F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2037195221E5DA5B00796B6F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				2037197F21E5DBA500796B6F /* idevs.h */,
 				2037197921E5DBA500796B6F /* idevs.mm */,
 				2037197C21E5DBA500796B6F /* easymetal.h */,
+				2027452222AFCEA500A3E2B9 /* easymetal_extern.h */,
 				2037197B21E5DBA500796B6F /* easymetal.mm */,
 			);
 			name = src;
@@ -224,6 +227,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2027452322AFCF3900A3E2B9 /* easymetal_extern.h in Headers */,
 				203719B321E5E10700796B6F /* ieee_half.h in Headers */,
 				203719B421E5E10700796B6F /* easymetal.h in Headers */,
 			);
@@ -605,13 +609,12 @@
 				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = EM/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = YudaMo.EM;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -637,13 +640,12 @@
 				GCC_C_LANGUAGE_STANDARD = c11;
 				INFOPLIST_FILE = EM/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = YudaMo.EM;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
