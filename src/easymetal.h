@@ -197,7 +197,10 @@ extern "C" {
     MTL_API MTLvoid mtlDelTexture(MTLuint *__texture);
     MTL_API MTLvoid mtlGetBytesFromTexture(MTLuint __texture, MTLsizeu __slice, MTLsizeu __bytesperrow, MTLTexRegion __region, MTLvoid *__bytes);
     MTL_API MTLvoid mtlSetBytesToTexture(MTLuint __texture, MTLsizeu __slice, MTLsizeu __bytesperrow, MTLTexRegion __region, MTLvoid *__bytes);
-    
+    MTL_API MTLvoid mtlGetWidthFromCurrentTexture(MTLsizei *__width);
+    MTL_API MTLvoid mtlGetHeightFromCurrentTexture(MTLsizei *__height);
+    MTL_API MTLvoid mtlGetWidthFromTexture(MTLuint __texture, MTLsizei *__width);
+    MTL_API MTLvoid mtlGetHeightFromTexture(MTLuint __texture, MTLsizei *__height);
     
 #pragma mark MTLBuffer
     // for MTLBuffer

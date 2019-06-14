@@ -963,6 +963,44 @@ MTL_API MTLvoid mtlSetBytesToTexture(MTLuint __texture, MTLsizeu __slice, MTLsiz
     assert(0);
 }
 
+MTL_API MTLvoid mtlGetWidthFromCurrentTexture(MTLsizei *__width) {
+#if MTL_AVALIABLE
+    *__width = 0;
+    if (s_metalresources._current_texture.second) {
+        *__width = (MTLsizei)[s_metalresources._current_texture.second width];
+        return;
+    }
+    else {
+        assert(0);
+    }
+#endif // #if MTL_AVALIABLE
+    assert(0);
+}
+
+MTL_API MTLvoid mtlGetHeightFromCurrentTexture(MTLsizei *__height) {
+#if MTL_AVALIABLE
+    *__height = 0;
+    if (s_metalresources._current_texture.second) {
+        *__height = (MTLsizei)[s_metalresources._current_texture.second height];
+        return;
+    }
+    else {
+        assert(0);
+    }
+#endif // #if MTL_AVALIABLE
+    assert(0);
+}
+
+MTL_API MTLvoid mtlGetWidthFromTexture(MTLuint __texture, MTLsizei *__width) {
+    mtlBindTexture(__texture);
+    mtlGetWidthFromCurrentTexture(__width);
+}
+
+MTL_API MTLvoid mtlGetHeightFromTexture(MTLuint __texture, MTLsizei *__height) {
+    mtlBindTexture(__texture);
+    mtlGetHeightFromCurrentTexture(__height);
+}
+
 #pragma mark MTLBuffer
 
 MTLvoid mtlGenBufferFromCurrentDevice(MTLenum __option, MTLsizeu __size, MTLuint *__buffer) {
