@@ -37,6 +37,7 @@
 #define _EASYMETAL_H_
 
 #define MTL_API
+#define EM_AVALIABLE 1
 
 #include <stdio.h>
 #include <stdint.h>
@@ -219,63 +220,63 @@ extern "C" {
     
 #pragma mark MTLFunctionConstantValues
     // for MTLFunctionConstantValues :
-#define MTL_DATATYPE_NONE   0,
-#define MTL_DATATYPE_STRUCT   1,
-#define MTL_DATATYPE_ARRAY    2,
-#define MTL_DATATYPE_FLOAT    3,
-#define MTL_DATATYPE_FLOAT2   4,
-#define MTL_DATATYPE_FLOAT3   5,
-#define MTL_DATATYPE_FLOAT4   6,
-#define MTL_DATATYPE_FLOAT2x2   7,
-#define MTL_DATATYPE_FLOAT2x3   8,
-#define MTL_DATATYPE_FLOAT2x4   9,
-#define MTL_DATATYPE_FLOAT3x2   10,
-#define MTL_DATATYPE_FLOAT3x3   11,
-#define MTL_DATATYPE_FLOAT3x4   12,
-#define MTL_DATATYPE_FLOAT4x2   13,
-#define MTL_DATATYPE_FLOAT4x3   14,
-#define MTL_DATATYPE_FLOAT4x4   15,
-#define MTL_DATATYPE_HALF    16,
-#define MTL_DATATYPE_HALF2   17,
-#define MTL_DATATYPE_HALF3   18,
-#define MTL_DATATYPE_HALF4   19,
-#define MTL_DATATYPE_HALF2x2   20,
-#define MTL_DATATYPE_HALF2x3   21,
-#define MTL_DATATYPE_HALF2x4   22,
-#define MTL_DATATYPE_HALF3x2   23,
-#define MTL_DATATYPE_HALF3x3   24,
-#define MTL_DATATYPE_HALF3x4   25,
-#define MTL_DATATYPE_HALF4x2   26,
-#define MTL_DATATYPE_HALF4x3   27,
-#define MTL_DATATYPE_HALF4x4   28,
-#define MTL_DATATYPE_INT    29,
-#define MTL_DATATYPE_INT2   30,
-#define MTL_DATATYPE_INT3   31,
-#define MTL_DATATYPE_INT4   32,
-#define MTL_DATATYPE_UINT    33,
-#define MTL_DATATYPE_UINT2   34,
-#define MTL_DATATYPE_UINT3   35,
-#define MTL_DATATYPE_UINT4   36,
-#define MTL_DATATYPE_SHORT    37,
-#define MTL_DATATYPE_SHORT2   38,
-#define MTL_DATATYPE_SHORT3   39,
-#define MTL_DATATYPE_SHORT4   40,
-#define MTL_DATATYPE_USHORT   41,
-#define MTL_DATATYPE_USHORT2   42,
-#define MTL_DATATYPE_USHORT3   43,
-#define MTL_DATATYPE_USHORT4   44,
-#define MTL_DATATYPE_CHAR    45,
-#define MTL_DATATYPE_CHAR2   46,
-#define MTL_DATATYPE_CHAR3   47,
-#define MTL_DATATYPE_CHAR4   48,
-#define MTL_DATATYPE_UCHAR    49,
-#define MTL_DATATYPE_UCHAR2   50,
-#define MTL_DATATYPE_UCHAR3   51,
-#define MTL_DATATYPE_UCHAR4   52,
-#define MTL_DATATYPE_BOOL    53,
-#define MTL_DATATYPE_BOOL2   54,
-#define MTL_DATATYPE_BOOL3   55,
-#define MTL_DATATYPE_BOOL4   56,
+#define MTL_DATATYPE_NONE   0
+#define MTL_DATATYPE_STRUCT   1
+#define MTL_DATATYPE_ARRAY    2
+#define MTL_DATATYPE_FLOAT    3
+#define MTL_DATATYPE_FLOAT2   4
+#define MTL_DATATYPE_FLOAT3   5
+#define MTL_DATATYPE_FLOAT4   6
+#define MTL_DATATYPE_FLOAT2x2   7
+#define MTL_DATATYPE_FLOAT2x3   8
+#define MTL_DATATYPE_FLOAT2x4   9
+#define MTL_DATATYPE_FLOAT3x2   10
+#define MTL_DATATYPE_FLOAT3x3   11
+#define MTL_DATATYPE_FLOAT3x4   12
+#define MTL_DATATYPE_FLOAT4x2   13
+#define MTL_DATATYPE_FLOAT4x3   14
+#define MTL_DATATYPE_FLOAT4x4   15
+#define MTL_DATATYPE_HALF    16
+#define MTL_DATATYPE_HALF2   17
+#define MTL_DATATYPE_HALF3   18
+#define MTL_DATATYPE_HALF4   19
+#define MTL_DATATYPE_HALF2x2   20
+#define MTL_DATATYPE_HALF2x3   21
+#define MTL_DATATYPE_HALF2x4   22
+#define MTL_DATATYPE_HALF3x2   23
+#define MTL_DATATYPE_HALF3x3   24
+#define MTL_DATATYPE_HALF3x4   25
+#define MTL_DATATYPE_HALF4x2   26
+#define MTL_DATATYPE_HALF4x3   27
+#define MTL_DATATYPE_HALF4x4   28
+#define MTL_DATATYPE_INT    29
+#define MTL_DATATYPE_INT2   30
+#define MTL_DATATYPE_INT3   31
+#define MTL_DATATYPE_INT4   32
+#define MTL_DATATYPE_UINT    33
+#define MTL_DATATYPE_UINT2   34
+#define MTL_DATATYPE_UINT3   35
+#define MTL_DATATYPE_UINT4   36
+#define MTL_DATATYPE_SHORT    37
+#define MTL_DATATYPE_SHORT2   38
+#define MTL_DATATYPE_SHORT3   39
+#define MTL_DATATYPE_SHORT4   40
+#define MTL_DATATYPE_USHORT   41
+#define MTL_DATATYPE_USHORT2   42
+#define MTL_DATATYPE_USHORT3   43
+#define MTL_DATATYPE_USHORT4   44
+#define MTL_DATATYPE_CHAR    45
+#define MTL_DATATYPE_CHAR2   46
+#define MTL_DATATYPE_CHAR3   47
+#define MTL_DATATYPE_CHAR4   48
+#define MTL_DATATYPE_UCHAR    49
+#define MTL_DATATYPE_UCHAR2   50
+#define MTL_DATATYPE_UCHAR3   51
+#define MTL_DATATYPE_UCHAR4   52
+#define MTL_DATATYPE_BOOL    53
+#define MTL_DATATYPE_BOOL2   54
+#define MTL_DATATYPE_BOOL3   55
+#define MTL_DATATYPE_BOOL4   56
     MTL_API MTLvoid mtlGenFunctionConstantValues(MTLuint *__constvals);
     MTL_API MTLvoid mtlSetFunctionConstantValuesWithIndex(MTLuint __constvals, MTLvoid *__data, MTLenum __datatype, MTLidx __index);
     MTL_API MTLvoid mtlSetFunctionConstantValuesWithName(MTLuint __constvals, MTLvoid *__data, MTLenum __datatype, const MTLchar * __name);
