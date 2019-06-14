@@ -1100,6 +1100,26 @@ MTLvoid mtlGenBufferFromCurrentDeviceWithDataNoCopy(MTLenum __option, MTLsizeu _
     assert(0);
 }
 
+MTL_API MTLvoid mtlGenBufferFromDevice(MTLuint __device, MTLenum __option, MTLsizeu __size, MTLuint *__buffer) {
+    mtlSetCurrentDevice(__device);
+    mtlGenBufferFromCurrentDevice(__option,  __size, __buffer);
+}
+
+MTL_API MTLvoid mtlGenBufferFromHeap(MTLuint __heap, MTLenum __option, MTLsizeu __size, MTLuint *__buffer) {
+    mtlSetCurrentHeap(__heap);
+    mtlGenBufferFromCurrentHeap(__option, __size, __buffer);
+}
+
+MTL_API MTLvoid mtlGenBufferFromDeviceWithData(MTLuint __device, MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer) {
+    mtlSetCurrentDevice(__device);
+    mtlGenBufferFromCurrentDeviceWithData(__option, __size, __data, __buffer);
+}
+
+MTL_API MTLvoid mtlGenBufferFromDeviceWithDataNoCopy(MTLuint __device, MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer) {
+    mtlSetCurrentDevice(__device);
+    mtlGenBufferFromCurrentDeviceWithDataNoCopy(__option, __size, __data, __buffer);
+}
+
 MTLvoid mtlBindBuffer(MTLuint __buffer) {
 #if MTL_AVALIABLE
     assert(__buffer);

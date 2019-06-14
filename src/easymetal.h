@@ -201,18 +201,22 @@ extern "C" {
     
 #pragma mark MTLBuffer
     // for MTLBuffer
-#define MTL_RESOURCE_OPTION_CPUCACHEMODE_DEFAULT 0
-#define MTL_RESOURCE_OPTION_CPUCACHEMODE_WRITECOMBINED 1
-#define MTL_RESOURCE_OPTION_STORAGEMODE_SHARED 0
-#define MTL_RESOURCE_OPTION_STORAGEMODE_PRIVATE 32
-#define MTL_RESOURCE_OPTION_STORAGEMODE_MANAGED          16
-#define MTL_RESOURCE_OPTION_STORAGEMODE_MEMLESS 48
-#define MTL_RESOURCE_OPTION_HAZARDTRACKINGMODE_UNTRACK 256
+#define MTL_RESOURCE_OPTION_CPUCACHEMODE_DEFAULT            0
+#define MTL_RESOURCE_OPTION_CPUCACHEMODE_WRITECOMBINED      1
+#define MTL_RESOURCE_OPTION_STORAGEMODE_SHARED              0
+#define MTL_RESOURCE_OPTION_STORAGEMODE_PRIVATE             32
+#define MTL_RESOURCE_OPTION_STORAGEMODE_MANAGED             16
+#define MTL_RESOURCE_OPTION_STORAGEMODE_MEMLESS             48
+#define MTL_RESOURCE_OPTION_HAZARDTRACKINGMODE_UNTRACK      256
     
     MTL_API MTLvoid mtlGenBufferFromCurrentDevice(MTLenum __option, MTLsizeu __size, MTLuint *__buffer);
     MTL_API MTLvoid mtlGenBufferFromCurrentHeap(MTLenum __option, MTLsizeu __size, MTLuint *__buffer);
     MTL_API MTLvoid mtlGenBufferFromCurrentDeviceWithData(MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer);
     MTL_API MTLvoid mtlGenBufferFromCurrentDeviceWithDataNoCopy(MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer);
+    MTL_API MTLvoid mtlGenBufferFromDevice(MTLuint __device, MTLenum __option, MTLsizeu __size, MTLuint *__buffer);
+    MTL_API MTLvoid mtlGenBufferFromHeap(MTLuint __heap, MTLenum __option, MTLsizeu __size, MTLuint *__buffer);
+    MTL_API MTLvoid mtlGenBufferFromDeviceWithData(MTLuint __device, MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer);
+    MTL_API MTLvoid mtlGenBufferFromDeviceWithDataNoCopy(MTLuint __device, MTLenum __option, MTLsizeu __size, MTLvoid *__data, MTLuint *__buffer);
     MTL_API MTLvoid mtlBindBuffer(MTLuint __buffer);
     MTL_API MTLvoid mtlSetCurrentBuffer(MTLuint __buffer);
     MTL_API MTLvoid mtlGetBytesFromBuffer(MTLuint __buffer, MTLsizeu __size, MTLvoid *__bytes);
