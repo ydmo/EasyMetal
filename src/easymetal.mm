@@ -991,6 +991,25 @@ MTL_API MTLvoid mtlGetHeightFromCurrentTexture(MTLsizei *__height) {
     assert(0);
 }
 
+MTL_API MTLvoid mtlGetArraylengthFromCurrentTexture(MTLsizei *__arraylength) {
+#if MTL_AVALIABLE
+    *__arraylength = 0;
+    if (s_metalresources._current_texture.second) {
+        if ([s_metalresources._current_texture.second textureType] == MTLTextureType2DArray) {
+            *__arraylength = (MTLsizei)[s_metalresources._current_texture.second arrayLength];
+        }
+        else {
+            *__arraylength = 1;
+        }
+        return;
+    }
+    else {
+        assert(0);
+    }
+#endif // #if MTL_AVALIABLE
+    assert(0);
+}
+
 MTL_API MTLvoid mtlGetWidthFromTexture(MTLuint __texture, MTLsizei *__width) {
     mtlBindTexture(__texture);
     mtlGetWidthFromCurrentTexture(__width);
@@ -999,6 +1018,11 @@ MTL_API MTLvoid mtlGetWidthFromTexture(MTLuint __texture, MTLsizei *__width) {
 MTL_API MTLvoid mtlGetHeightFromTexture(MTLuint __texture, MTLsizei *__height) {
     mtlBindTexture(__texture);
     mtlGetHeightFromCurrentTexture(__height);
+}
+
+MTL_API MTLvoid mtlGetArraylengthFromTexture(MTLuint __texture, MTLsizei *__arraylength) {
+    mtlBindTexture(__texture);
+    mtlGetArraylengthFromCurrentTexture(__arraylength);
 }
 
 #pragma mark MTLBuffer
