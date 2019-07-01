@@ -2332,8 +2332,13 @@ MTL_API MTLvoid mtlCurrentEncoderSetBytes(MTLvoid *__bytes, MTLuint __length, MT
     if (@available(iOS 10.0, *)) {
         if (s_metalresources._current_cmdencoder.second) {
             if (__bytes) {
-                [s_metalresources._current_cmdencoder.second setBytes:__bytes length:__length atIndex:__index];
-                return;
+                if (__length) {
+                    [s_metalresources._current_cmdencoder.second setBytes:__bytes length:__length atIndex:__index];
+                    return;
+                }
+                else {
+                    assert(0);
+                }
             }
             else {
                 assert(0);
@@ -2394,6 +2399,29 @@ MTL_API MTLvoid mtlCurrentEncoderSetTexture(MTLuint __texture, MTLidx __index) {
                 else {
                     assert(0);
                 }
+            }
+            else {
+                assert(0);
+            }
+        }
+        else {
+            assert(0);
+        }
+    }
+    else {
+        assert(0);
+    }
+#endif // MTL_AVALIABLE
+    assert(0);
+}
+
+MTL_API MTLvoid mtlCurrentEncoderSetThreadgroupMemory(MTLuint __length, MTLidx __index) {
+#if MTL_AVALIABLE
+    if (@available(iOS 10.0, *)) {
+        if (s_metalresources._current_cmdencoder.second) {
+            if (__length) {
+                [s_metalresources._current_cmdencoder.second setThreadgroupMemoryLength:__length atIndex:__index];
+                return;
             }
             else {
                 assert(0);

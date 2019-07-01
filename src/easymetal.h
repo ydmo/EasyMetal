@@ -347,6 +347,7 @@ extern "C" {
     MTL_API MTLvoid mtlCurrentEncoderSetBytes(MTLvoid *__bytes, MTLuint __length, MTLidx __index);
     MTL_API MTLvoid mtlCurrentEncoderSetBuffer(MTLuint __buffer, MTLidx __offset, MTLidx __index);
     MTL_API MTLvoid mtlCurrentEncoderSetTexture(MTLuint __texture, MTLidx __index);
+    MTL_API MTLvoid mtlCurrentEncoderSetThreadgroupMemory(MTLuint __length, MTLidx __index);
     MTL_API MTLvoid mtlCurrentEncoderSetDispatchSize(MTLsizeu __threadgroupspergridx, MTLsizeu __threadgroupspergridy, MTLsizeu __threadgroupspergridz, MTLsizeu __threadsperthreadsgroupx, MTLsizeu __threadsperthreadsgroupy, MTLsizeu __threadsperthreadsgroupz);
     MTL_API MTLvoid mtlCurrentEncoderSetDispatchSize3(MTLsizeu3 __threadgroupspergrid, MTLsizeu3 __threadsperthreadgroup);
     MTL_API MTLvoid mtlCurrentEncoderWaitForCurrentFence(MTLvoid);
